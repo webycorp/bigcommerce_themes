@@ -151,58 +151,23 @@ n.parentNode.insertBefore(e, n);
 <meta property="og:description" content="Monday - Saturday: 10am - 8pm, Sunday: 10am - 6pm, Call Us: 1-800-486-7497">
 <meta property="og:image" content="{{getImage settings.store_logo.image}}">
 {{/if}}        
-        <!-- Shema Microdata -->      
-      {{#if page_type '==' 'default'}}       
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "Organization",
-  "name": "gritrsports.com",
-  "logo": "https://cdn11.bigcommerce.com/s-lpuqsi1cy6/images/stencil/original/logo-ex-gna3_1598336431__39548.original.png",
-  "url": "gritrsports.com",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "7901 Boulevard 26 #200",
-    "addressLocality": "North Richland Hills",
-    "addressRegion": "Texas",
-    "postalCode": "76180",
-    "addressCountry": "United States"
-  },
-  "sameAs": ["https://www.facebook.com/gritrsports/", "https://www.instagram.com/gritrsports/", "https://www.linkedin.com/company/gritrsports", "https://www.pinterest.com/gritrsports/"]
-}
 
-</script>
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content={{{json head.title}}}>
-<meta name="twitter:site" content="@gritrsports">
-<meta name="twitter:description" content={{{json head.title}}}>
-<meta name="twitter:image" content={{getImage settings.store_logo.image}}>
+<!-- Shema Microdata -->      
+{{#if page_type '==' 'default'}}       
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content={{{json head.title}}}>
+    <meta name="twitter:site" content="@gritrsports">
+    <meta name="twitter:description" content={{{json head.title}}}>
+    <meta name="twitter:image" content={{getImage settings.store_logo.image}}>
 {{/if}}
 
 {{#if page_type '==' 'cart'}}
    <link rel="preload" href="https://store-lpuqsi1cy6.mybigcommerce.com/content/css/ammo_cart.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 {{/if}}
 
-        {{#if page_type '==' 'default'}}	
-        <meta name="keywords" content="gun shop, gun store, shooting sports, sporting goods">
-            <!-- Start Google search code -->
-            <script type="application/ld+json">
-              {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "url": "https://gritrsports.com/",
-                "potentialAction": {
-                  "@type": "SearchAction",
-                  "target": "https://gritrsports.com/search-results-page?q={query}",
-                  "query-input": {
-                      "@type": "PropertyValueSpecification",
-                      "valueName": "query"
-                    }
-                }
-              }
-            </script>
-            <!-- End Google search code -->	
-        {{/if}}	
+{{#if page_type '==' 'default'}}	
+    <meta name="keywords" content="gun shop, gun store, shooting sports, sporting goods">
+{{/if}}	
         
        <link rel="shortcut icon" href="https://cdn11.bigcommerce.com/s-lpuqsi1cy6/product_images/uploaded_images/favicongs.png" />
         <link rel="preload" href="https://store-lpuqsi1cy6.mybigcommerce.com/content/css/ammo_menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -244,60 +209,6 @@ n.parentNode.insertBefore(e, n);
 
         {{/if}}
     	
-    	<!-- CANONICAL FOR PAGE-->
-    	{{#if page_type '==' 'category'}}
-        <script>
-          (function () {
-            const parametrs = {
-              childList: true,
-              subtree: true,
-              attributes: true,
-              characterData: true,
-            };
-            const mutationObserver = new MutationObserver((mutations) => {
-              for (let i = 0; i < mutations.length; i++) {
-                const canonicalLink = document.querySelector('link[rel="canonical"]');
-                if (canonicalLink) {
-                  canonicalLink.setAttribute(
-                    'href',
-                    `${window.location.origin}${window.location.pathname}`
-                  );
-                  mutationObserver.disconnect();
-                  break;
-                }
-              }
-            });
-            mutationObserver.observe(document.head, parametrs);
-          })();
-        </script>
-        {{/if}}
-        {{#if page_type '==' 'brand'}}
-        <script>
-          (function () {
-            const parametrs = {
-              childList: true,
-              subtree: true,
-              attributes: true,
-              characterData: true,
-            };
-            const mutationObserver = new MutationObserver((mutations) => {
-              for (let i = 0; i < mutations.length; i++) {
-                const canonicalLink = document.querySelector('link[rel="canonical"]');
-                if (canonicalLink) {
-                  canonicalLink.setAttribute(
-                    'href',
-                    `${window.location.origin}${window.location.pathname}`
-                  );
-                  mutationObserver.disconnect();
-                  break;
-                }
-              }
-            });
-            mutationObserver.observe(document.head, parametrs);
-          })();
-        </script>
-        {{/if}}
-        
         <title>{{ head.title }}</title>
         {{{ resourceHints }}}
          {{#startsWith 'giftcertificates' page_type}}
@@ -311,7 +222,22 @@ n.parentNode.insertBefore(e, n);
                 <meta name="description" content="Gift certificates from Gritr Sports. Gift Certificates are perfect for anyone who loves Guns, Rifles, Pislols, Safety & Skill Instruction, Ammo and etc - Balance">
              {{/if}}
          {{else}}
-            {{{ head.meta_tags }}}
+            {{#if page_type '==' 'category'}}
+                <link rel="stylesheet" href="https://store-lpuqsi1cy6.mybigcommerce.com/content/css/ammo_faq.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+                <meta name="keywords" content="{{#each (split head.meta_tags 'name="keywords" content="') }}{{#if @index '===' 1 }}{{#each (split this '"') }}{{#if @index '===' 0 }}{{this}}{{/if}}{{/each}}{{/if}}{{/each}}" />
+                <meta name="description" content="{{#each (split head.meta_tags 'name="description" content="') }}{{#if @index '===' 1 }}{{#each (split this '"') }}{{#if @index '===' 0 }}{{this}}{{/if}}{{/each}}{{/if}}{{/each}}" />
+                <link rel="canonical" href="{{ category.url }}" />
+            {{else}}
+                {{#if page_type '==' 'brand'}}
+                    <link rel="stylesheet" href="https://store-lpuqsi1cy6.mybigcommerce.com/content/css/ammo_faq.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+                    <meta name="keywords" content="{{#each (split head.meta_tags 'name="keywords" content="') }}{{#if @index '===' 1 }}{{#each (split this '"') }}{{#if @index '===' 0 }}{{this}}{{/if}}{{/each}}{{/if}}{{/each}}" />
+                    <meta name="description" content="{{#each (split head.meta_tags 'name="description" content="') }}{{#if @index '===' 1 }}{{#each (split this '"') }}{{#if @index '===' 0 }}{{this}}{{/if}}{{/each}}{{/if}}{{/each}}" />
+                    <link rel="canonical" href="{{ brand.url }}" />
+                {{else}}
+                    {{{ head.meta_tags }}}
+                {{/if}}
+            {{/if}}
+            
          {{/startsWith}}
         {{{ head.config }}}
         {{#block "head"}} {{/block}}
@@ -321,61 +247,7 @@ n.parentNode.insertBefore(e, n);
         
         <!-- Product Schema -->
         {{#if page_type '==' 'product'}}
-        <script type="application/ld+json">
-          {
-            "@context": "https://schema.org",
-            "@type":"Product",
-            "name":"{{product.title}}",
-            "url":"{{product.url}}",
-            "image":"{{getImage product.main_image}}",
-            "sku":"{{product.sku}}",
-            "mpn":"{{product.mpn}}",
-            "description":"{{product.description}}",
-            "brand":{
-              "@type":"Brand",
-              "name":"{{product.brand.name}}",
-              "url":"{{product.brand.url}}"
-            },
-            {{#if product.reviews.list}}
-            "review":[
-            {{#each product.reviews.list}}
-              {
-                "@type":"Review",
-                "datePublished":"{{date}}",
-                "description":"{{text}}",
-                "name":"{{title}}",
-                "author": {
-                  "@type": "Person",
-                  "name": {{#if name}}"{{name}}"{{else}}"Unknown"{{/if}}
-                },
-                "reviewRating": {
-                  "@type":"Rating",
-                  "ratingValue":"{{rating}}",
-                  "bestRating":"5"
-                }
-              }{{#unless @last}},{{/unless}}
-            {{/each}}
-            ],
-            {{/if}}
-            {{#if product.num_reviews '>' 0}}
-            "aggregateRating": {
-              "@type":"AggregateRating",
-              "ratingValue": "{{product.rating}}",
-              "reviewCount": "{{product.num_reviews}}",
-              "bestRating": "5",
-              "worstRating": "1"
-            },
-            {{/if}}
-            "offers": {
-              "@type":"Offer",
-              "itemCondition":{{#if product.condition}}"https://schema.org/UsedCondition"{{else}}"https://schema.org/NewCondition"{{/if}},
-              "priceCurrency":"USD",
-              "price":"{{product.price.without_tax.value}}",
-              "availability":{{#if product.can_purchase}}"https://schema.org/InStock"{{else}}"https://schema.org/OutOfStock"{{/if}},
-              "url":"{{product.url}}"
-            }
-          }
-        </script>
+
         
         <meta name="twitter:card" content="summary">
         <meta name="twitter:title" content="{{product.title}}">
@@ -476,16 +348,7 @@ n.parentNode.insertBefore(e, n);
             {{~inject 'txtNavMore' (lang 'common.nav_more')}}
         {{/if}}
         {{{snippet 'htmlhead'}}}
-        
-        {{inject "categoryInfo" category}}
-        	<script>	
-                const context = JSON.parse({{jsContext}});
-                const { categoryInfo } = context;
-                if (categoryInfo) {	
-                    //console.log(categoryInfo);
-                }	
-            </script> 
-        
+
     </head>
     <body class="csscolumns papaSupermarket-layout--{{theme_settings.layout}} 
         papaSupermarket-style--{{theme_settings.style}}
@@ -562,6 +425,12 @@ n.parentNode.insertBefore(e, n);
         {{#if page_type '==' 'product'}}
         <script src="https://store-lpuqsi1cy6.mybigcommerce.com/content/custom_scripts/item_matching_min.js"></script>
         <script src="https://www.powr.io/powr.js?external-type=bigcommerce" async=""></script>
+        {{/if}}
+        {{#if page_type '==' 'category'}}
+        <script src="https://store-lpuqsi1cy6.mybigcommerce.com/content/custom_scripts/ammo_faq.js"></script>
+        {{/if}}
+        {{#if page_type '==' 'brand'}}
+        <script src="https://store-lpuqsi1cy6.mybigcommerce.com/content/custom_scripts/ammo_faq.js"></script>
         {{/if}}
     </body>
 </html>

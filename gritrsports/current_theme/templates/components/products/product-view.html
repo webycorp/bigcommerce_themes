@@ -449,7 +449,7 @@
         <div class="emthemesModezBannersBlockBeforeDescription-wrapper emthemesModezBannersBlockBeforeDescription-wrapper--{{theme_settings.productpage_description_type}}"><div data-emthemesmodez-remote-banner="emthemesModezBannersBlockBeforeDescription"></div></div>
     {{/if}}
 
-    <div data-also-bought-parent-scope class="productView-descriptionWrapper">
+    <div data-also-bought-parent-scope class="productView-descriptionWrapper weby-product-description">
         <article class="productView-description{{#if theme_settings.productpage_description_type '===' 'full'}} productView-description--full{{/if}}">
             <ul class="tabs tabs--alt" data-tab>
                 <li class="tab tab--description is-active">
@@ -479,9 +479,9 @@
 
                 {{#all product.custom_fields.length theme_settings.productpage_custom_fields_tab}}
                 {{#any (unless theme_settings.productpage_custom_fields_hide_special) (if product.custom_fields.length '>' specialCustomFields )}}
-                    <li class="tab tab--addition">
-                        <a class="tab-title" href="#tab-addition">{{lang 'products.addition'}}</a>
-                    </li>
+                    <!--<li class="tab tab--addition">-->
+                    <!--    <a class="tab-title" href="#tab-addition">{{lang 'products.addition'}}</a>-->
+                    <!--</li>-->
                 {{/any}}
                 {{/all}}
                 {{#all settings.show_product_reviews theme_settings.show_product_reviews_tabs}}
@@ -536,7 +536,7 @@
                                         <li class="videoGallery-item">
                                             <a href="#" class="video {{#if @first}}is-active{{/if}}" data-video-item data-video-id="{{id}}">
                                                 <div class="video-figure">
-                                                    <img class="lazyload" data-sizes="auto" src="{{cdn 'img/loading.svg'}}" data-src="//i.ytimg.com/vi/{{id}}/default.jpg" alt="{{title_long}} />
+                                                    <img class="lazyload" data-sizes="auto" src="{{cdn 'img/loading.svg'}}" data-src="//i.ytimg.com/vi/{{id}}/default.jpg" alt="{{title_long}}" />
                                                 </div>
                                                 <div class="video-body">
                                                     <h5 class="video-title">{{title_long}}</h5>
@@ -561,11 +561,23 @@
                         <a href="#" class="emthemesModez-mobile-collapse-handle" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
                     </div>
                 {{/if}}
-                {{#all product.custom_fields.length theme_settings.productpage_custom_fields_tab}}
+                
+                {{#all settings.show_product_reviews theme_settings.show_product_reviews_tabs}}
+                <div class="tab-content" id="tab-reviews" data-emthemesmodez-mobile-collapse>
+                    <p class="page-heading">{{lang 'products.reviews.header' total=product.reviews.total}}</p>
+                    <div class="productView-description-tabContent emthemesModez-mobile-collapse-content" data-emthemesmodez-mobile-collapse-content>
+                        {{> components/products/reviews reviews=product.reviews product=product urls=urls}}
+                    </div>
+                    <a href="#" class="emthemesModez-mobile-collapse-handle" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
+                </div>
+                {{/all}}
+            </div>
+        </article>
+        {{#all product.custom_fields.length theme_settings.productpage_custom_fields_tab}}
                 {{#any (unless theme_settings.productpage_custom_fields_hide_special) (if product.custom_fields.length '>' specialCustomFields )}}
-                    <div class="tab-content" id="tab-addition" data-emthemesmodez-mobile-collapse>
-                        <p class="page-heading">{{lang 'products.addition'}}</p>
-                        <div class="productView-addition-tabContent emthemesModez-mobile-collapse-content" data-emthemesmodez-mobile-collapse-content>
+                    <div class="tab-content is-active weby-product-description-box" id="tab-addition" data-emthemesmodez-mobile-collapse>
+                        <p class="page-heading weby-product-description-header">{{lang 'products.addition'}}</p>
+                        <div class="productView-addition-tabContent emthemesModez-mobile-collapse-content weby-product-description-table" data-emthemesmodez-mobile-collapse-content>
                             <table class="productView-addition-table table">
                                 <thead>
                                     <tr>
@@ -595,21 +607,10 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a href="#" class="emthemesModez-mobile-collapse-handle" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
+                        <a href="#" class="emthemesModez-mobile-collapse-handle weby-product-description-table" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
                     </div>
                 {{/any}}
                 {{/all}}
-                {{#all settings.show_product_reviews theme_settings.show_product_reviews_tabs}}
-                <div class="tab-content" id="tab-reviews" data-emthemesmodez-mobile-collapse>
-                    <p class="page-heading">{{lang 'products.reviews.header' total=product.reviews.total}}</p>
-                    <div class="productView-description-tabContent emthemesModez-mobile-collapse-content" data-emthemesmodez-mobile-collapse-content>
-                        {{> components/products/reviews reviews=product.reviews product=product urls=urls}}
-                    </div>
-                    <a href="#" class="emthemesModez-mobile-collapse-handle" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
-                </div>
-                {{/all}}
-            </div>
-        </article>
     </div>
-    
+
 </div>

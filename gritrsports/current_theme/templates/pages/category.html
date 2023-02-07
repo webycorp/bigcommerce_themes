@@ -24,9 +24,9 @@ shop_by_brand:
 <h1 class="page-heading page-heading--mobileOnly">{{category.name}}</h1>
 
 <div class="page">
-    <aside class="page-sidebar page-sidebar--top" id="faceted-search-container">
-        {{> components/category/sidebar}}
-    </aside>
+    <!--<aside class="page-sidebar page-sidebar--top" id="faceted-search-container">-->
+    <!--    {{> components/category/sidebar}}-->
+    <!--</aside>-->
 
     <main class="page-content">
         {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
@@ -76,31 +76,10 @@ shop_by_brand:
             {{/if}}
         {{/if}}
 
-        {{#if theme_settings.categorypage_search '===' 'show'}}
-            <form class="categoryPage-searchInCategory-form {{#unless category.faceted_search_enabled}}noFaceted{{/unless}} {{#unless category.description}}noDesc{{/unless}}">
-                <fieldset class="form-fieldset">
-                    <legend class="is-srOnly">{{lang 'search.actionbar.input_placeholder'}}</legend>
-                    <div class="form-field">
-                        <input class="form-input" type="text" name="q" placeholder="{{lang 'search.actionbar.input_placeholder'}}" value="{{forms.search.query}}" data-search-in-category>
-                        <button class="button button--small" type="button" data-clear>{{lang 'search.actionbar.clear_all'}}</button>
-                    </div>
-                </fieldset>
-            </form>
-        {{/if}}
-
-        <div id="product-listing-container" class="
-            {{#if theme_settings.product_list_display_mode '===' 'grid2'}}mode-2
-            {{else if theme_settings.product_list_display_mode '===' 'grid3'}}mode-3
-            {{else if theme_settings.product_list_display_mode '===' 'grid6'}}mode-6
-            {{else if theme_settings.product_list_display_mode '===' 'list'}}mode-1
-            {{else if theme_settings.product_list_display_mode '===' 'listbo'}}mode-bo{{/if}}
-        ">
-            {{#if category.products}}
-                {{> components/category/product-listing}}
-            {{else}}
-                <p>{{lang 'categories.no_products'}}</p>
-            {{/if}}
-        </div>
+        <!-- Searchanise Filters Block  -->
+        <div class="snize" id="snize_results"></div> 
+        <!-- END Searchanise Filters Block  -->
+        
         {{{region name="category_below_content"}}}
         {{{region name="category_below_content--global"}}}
         <br><br>
@@ -125,264 +104,49 @@ shop_by_brand:
     </aside>
 </div>
 
+<style type="text/css">
+/* Load spinner */
+#snize-preload-spinner {
+    height: 100px;
+    width: 32px;
+    margin: 0 auto;
+    background-position: 0px center;
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,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);
+}
+</style>
+<script>
+(function(window, undefined) {
+    var sXpos = 0, sIndex = 0, sTotalFrames = 12, sInterval = null;
+
+    if (document.getElementById('snize_results').innerHTML != '') {
+        return;
+    }
+
+    document.getElementById('snize_results').innerHTML = '<div id="snize-preload-spinner"></div>';
+    sInterval = setInterval(function()
+    {
+        var spinner = document.getElementById('snize-preload-spinner');
+        if (spinner) {
+            document.getElementById('snize-preload-spinner').style.backgroundPosition = (- sXpos) + 'px center';
+        } else {
+            clearInterval(sInterval);
+        }
+
+        sXpos  += 32;
+        sIndex += 1;
+
+        if (sIndex >= 12) {
+            sXpos  = 0;
+            sIndex = 0;
+        }
+    }, 30);
+}(window));
+></script>
+
 {{/partial}}
 {{#and theme_settings.instantload is_ajax}}
     {{> layout/instantload-base}}
 {{else}}
     {{> layout/base}}
 {{/and}}
-
-{{#if category.id '==' 235}}
-<script type="application/ld+json">
-    {
-      "@context": "http://schema.org/",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What calibers are used in AR-15?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "AR-15 most common calibers are 5.56x45 or .223 Remington. Due to the pressures associated with firing 5.56×45mm, you shouldn't fire 5.56×45mm rounds in an AR-15 that is marked as .223 Remington, main reason being that higher pressure might cause damage to the rifle.On other hand, it's safe to use .223 in any 5.56 market AR-15 rifle. However, with enough modifications and adjustments, it's possible to use almost any caliber you can think of: from .17 HMR to .45 ACP and even .50. One of the more popular calibers that have been gaining popularity is .300 BLK - a suppressor-friendly load, excellent for hunting, home defense and short range shooting. Nevertheless, 5.56x45 and .223 Remington remain the most popular options for AR-15."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How long will an AR-15 last?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "On average, an AR-15 rifle barrel is going to last for about 20,000 rounds. The longevity of your AR-15 depends on how many rounds you going to shoot every week. If you're putting 100 rounds a week at the range, AR-15 barrel is going to last you approximately 15 years, as long as you take good care of your rifle. And even after, considering how easy it is to switch parts in your typical AR-15 - all you have to do is replace the barrel. AR-15 is infamous for its modularity and room for improving and modifying according to your needs."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the best barrel length for AR-15?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "There are 3 options when it comes to barrel length for AR-15: 20-inch, 18-inch and 16-inch. Starting with 20-inch barrel: it's mainly used for hunting and target shooting. Longer barrel provides AR-15 with lighter recoil, extra bullet velocity and greater sight radius. However, a 20-inch barrel makes it much harder to maneuver around and depending on the handguard, makes muzzle heaver. Now, on the other end of the spectrum, there is a 16-inch barrel: a shorter barrel is easy to maneuver and store. In addition to that, it increases the stopping power. In general, 16-inch is the most popular barrel length for AR-15 for home defense, and even though it possesses lower velocity compared to 18 and 20-inch barrels - it doesn't really matter in home defense situations. Now, 18-inch barrel is the least popular option for barrel length, due to it being less compact compared to 16-inch as well as having heavier recoil compared to a 20-inch barrel."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is AR-15 better than AK-47?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Back in the day, most people would say that AK-47 is very reliable, even in the harshest environments, though having a lower effective range and being less accurate compared to the AR-15. And even though it was true back when AR-15 was first released, it's not as much of a case currently. Most of the problems regarding AR-15 malfunctioning in the extreme environment have been addressed over the last decades, making AR-15 rifles as reliable as AK-47s, if not more so. However, that came at a cost - straight out of the box AR-15 would be on average more expensive compared to a similar AK-47 model. Now, when it comes to power, there is no arguing that the  AK-47 with its 7.62x39mm is much more powerful compared to AR-15's 5.56x45mm. Sadly, that's pretty much the only advantage that AK-47 has over the  AR-15. When it comes to weight, ease of modification, effective shooting range, general ease of access and recoil - AR-15 rifles are simply superior to AK-47 ones."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How expensive are AR-15 rifles?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Unfortunately, there is no exact answer to this question. AR-15 can vary in price by quite a lot: from budget options around 500$ to high-end tactical models that would cost up to 3000$. Standard Mil-spec AR-15 rifles are a great starting point for anyone not experienced with the AR-15 platform. These rifles are great for target shooting and varmint hunting. However, there is always room for improvement and adjusting your rifle to your needs: scopes, floating handrails, adjustable and overall higher quality components can go a long way.  And for the high-end AR-15 rifles, you can expect impeccable quality right out of the box. AR-15 is famous for being extremely modification-friendly: you can start with a decent rifle and over time improve it to fit your needs."
-          }
-        }
-      ]
-    }
-  </script>  
-{{/if}}
-{{#if category.id '==' 237}}
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "What does AK stand for in AK-47?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "AK stands for (Avtomat Kalashnikova) which is roughly translated as Kalashnikov's automatic rifle. Named after the man who developed the original AK rifle - Mikhail Kalashnikov in 1947. Despite visual similarities, most of the rifles labeled as AK-47 nowadays are modified versions (AKMs) of the original AK-47."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "Where are AK-47 rifles manufactured?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "You would expect all AK-47s to be made in Russia by Kalashnikov Concern, but it's a bit more complicated than that. Ever since the collapse of the USSR, there have been many manufacturers from ex-Soviet nations: Romanian WASR, Serbian Zastava and Bulgarian Arsenal, as well as some American-made models by Century, PSA and Kalashnikov-USA. Most of the rifles on the market, however, are (sporting) models due to the import laws and 922r (Sporting purpose) restrictions."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "Is AK-47 better than AR-15?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Both AR-15 and AK-47 have their strong and weak sides, so it all comes down to the purpose you are pursuing. AR-15 is an amazing (do it all) rifle: higher shooting range, room for modification as well as ease of switching parts to fit your needs. However, it's much less reliable in harsh conditions compared to AK-47 and not as budget-friendly. Since AK-47 uses a higher caliber load, obviously stopping power and bullet penetration capabilities are going to be much higher for the AK."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "What is the difference between stamped and milled recievers for AK-47?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Milled receivers are, as the name states, milled from a solid piece of steel. Usually, those are considered sturdier compared to stamped ones. On the other hand, they are also much heavier. Stamped receivers are pressed into a shape from a thin sheet of metal and then riveted with a center spacer with both front and rear trunnions. Both receivers should last for roughly the same amount of rounds and should have little to no effect on accuracy."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "What caliber is an AK-47?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "The 7.62x39 remains to be the most popular round for AK-47. However, there are a few more options available. AK-74, which was developed in the late 70s, uses a 5.45x39 round, which has many advantages over standard 7.62x39: higher effective range, flatter trajectory and lighter recoil. Even though 5.45x39 possesses less penetrating power, it's much more effective against a living target due to higher velocity. There are also more niche AK models that use 5.56x45 and 9mm rounds: pistol caliber rifles are popular among target shooters due to lighter recoil."
-			}
-		}
-	]
-}
-</script>
-{{/if}}
-{{#if category.id '==' 218}}
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "Is there a difference between 9x19 and 9mm Luger?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "There is no difference at all! It's just various names used for the same round (and firearms using it). The 9x19mm Parabellum was designed by Georg Luger in 1901. Luger developed the 9mm Parabellum from his earlier design - a 7.65x21mm Parabellum. The 9mm Parabellum is a rimless, tapered round that fires a 9 mm diameter bullet."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "Why is 9mm Luger so popular?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Due to the low cost of 9mm ammo, its light recoil and overall high performance, 9mm Luger became a go-to round for military and police forces, eventually coming to popularity for civilian self-defense. Another benefit of 9mm is its compact size relative to .45 ACP or .40S&W, which allows you to utilize higher-capacity magazines while enjoying much more compact handgun designs. "
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "Does 9mm have enough stopping power?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "There have been various studies about handgun stopping power, which proved that 9mm usually requires 2 shots to stop the attacker, which is comparable to other popular handgun types such as .45ACP and .40S&W. Even though 9mm Luger provides less force than mentioned calibers, low recoil grants the ability to land shots faster due to increased accuracy."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "Which 9mm ammo to use: FMJ or JHP?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Full Metal Jacket (FMJ) ammo is a lot cheaper compared to Jacketed Hollow Point(JHP), which makes it an excellent ammo for target shooting and practice. JHP, on the other hand, is more expensive, but also much more effective for self-defense due to its ability to expand, inflicting more damage and reducing chances of over-penetration. In short, FMJ is superior for target shooting and JHP is superior for self-defense."
-			}
-		}
-	]
-}
-</script>
-{{/if}}
-{{#if category.id '==' 258}}
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "What is considered Western wear?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Western wear could be a wide variety of clothing, but usually, it refers to such pieces as western hats, cowboy boots and fringe jackets.
-When it comes to hats, originally it was mostly bowler hats or sombreros. However, in the 1870s, Stetson hats became popular due to their use in Union Cavalry. To this day, Stetson remains one of the most popular cowboy hat makers in the world.
-Cowboy boots are something almost mandatory if you're going for a western look. Instead of being rugged riding boots, modern models are quite comfortable while being an incredible accessory to enhance your look. There is a wide variety of models, with an astounding number of designs, so you would definitely find something fitting you style.
-Fringe jackets are also an iconic piece of western wear. There were many subcultures who would take on this piece of original Western culture, but most importanly it's associated with country and folk music. Nevertheless, it stays as amazing piece of western wear style.
-"
-			}
-		}
-	]
-}
-</script>
-{{/if}}
-
-{{#if category.id '==' 260}}
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "What are the original western hats?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Even though people used other types of hats before, the origin of the western hat is attributed to John B. Stetson back in the 1870s. It's said that he had gained inspiration once he headed west from New Jersey for health reasons. On his return east in 1865, he founded the Stetson Company in Philadelphia and created a hat that became a symbol of the pioneering American West - Boss of the Plains.
-Modern Stetsons come in a huge variety of shapes, materials and designs, but it still remains one of the most iconic western hat models. No matter what garments you wear, it's certain that you can find a Stetson to fit your style."
-			}
-		}
-	]
-}
-</script>
-{{/if}}
-
-{{#if category.id '==' 259}}
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "How to wear western boots?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "There are a few key points to consider when wearing western boots:
-Make sure that the boots fit you properly. Western boots should feel comfortable around the foot and ankle without restricting the natural movement of your foot.
-Wear a good pair of socks. It's important to wear socks that are thick enough to provide cushioning and support, but not so thick that they cause the boots to feel tight or constricting.
-Break in the boots: Like any new shoes, western boots might be a bit stiff at first, so it's a good idea to wear them around the house to help break them in and make them more comfortable.
-Wear western boots with the right clothing: Western boots are a versatile piece of footwear and can be dressed up or down, depending on the occasion. Pairing them with jeans would give you a more casual look while going for a classic dress or a suit would give you a more elevated look.
-Take care of the boots: Since western boots are made of leather, regularly cleaning and conditioning them will help to prolong their life and in general stay in better condition. It's also a good idea to use a boot jack or boot pull to remove the boots, as this will prevent damaging the boots or stretching them out of shape."
-			}
-		}
-	]
-}
-</script>
-{{/if}}
-
-{{#if category.id '==' 34}}
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "What are the most popular gun ammunition calibers?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "The best caliber of gun ammunition will depend on what are you planning to use the firearm for, as well as your personal preferences. Some popular calibers for different purposes include:
-9mm Luger: The most popular caliber for self-defense, known for its low recoil and high capacity.
-.45 ACP: Another popular self-defense option, famed for its incredible stopping power.
-.380 ACP: Not as popular as the other 2 options, this handgun round is perfect for concealed carry weapons.
-.223 Remington/5.56 NATO: One of the most popular rifle cartridges, mostly used for hunting, as well as home defense.
-.308 Winchester: One of the most well-known hunting cartridges, perfect for long-range shooting.
-.22 LR: Rimfire cartridge popular for recreational shooting and small game hunting due to its low cost and minimal recoil.
-Ultimately, the best caliber for you will depend on your specific needs and preferences. "
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "What is grain weight? Does it affect shooting?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Bullet grain refers to the weight of a bullet, typically measured in grains. The grain of a bullet can affect firearm's performance when it comes to bullet velocity, accuracy, and penetration.
-In general, a heavier bullet will have a slower velocity but may possess a higher stopping power and better penetration. A lighter higher velocity bullet may have less stopping power and less penetration, but also reduced recoil, allowing for higher accuracy. The ideal grain weight is going to depend on a variety of factors, ranging from effective range of the firearm to type of gun ammunition you're planning to load with, bullets shape and material it's made of."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "What is the difference between rimfire and centerfire gun ammunition?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Rimfire gun ammunition has its primers in a rim at the base of the cartridge. The firing pin strikes the rim of the cartridge to fire the round. On the other hand, centerfire ammo has its primer at the center of the cartridge base.
-Rimfire ammunition in general usually costs less and produces less noise and recoil. However, due to lighter loading and rimfire cartridge structure, it's not suitable for high power loads, nor it is suitable for reloading. Coupled with a lower range compared to centerfire, rimfire makes for a great option for practice, small game hunting and target shooting.
-Centerfire gun ammunition negates most of the performance issues of rimfire: it's more accurate, with a heavier load and produces much higher bullet velocity and is able to be reloaded. However, the average cost of centerfire is comparatively higher. Recoil is much more noticeable as well due to heavier loading.
-Generally, both rimfire and centerfire are excellent, just for different things. If all you want is to target shoot and maybe hunt some small game - go with rimfire ammo. If you're planning on hunting big game, while also having an option for home defense - centerfire is going to be your go-to."
-			}
-		}
-	]
-}
-</script>
-{{/if}}
