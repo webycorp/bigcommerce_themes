@@ -21,6 +21,16 @@
         data-product-variant="single-product-option"
     {{/if}}
 >
+    
+    <!-- Item Matching Script -->	
+    <div id="itemMatchingData" style="display:none" 
+        data-title="{{product.title}}"
+        data-sale-price="{{product.price.non_sale_price_without_tax.value}}"
+        data-standard-price="{{product.price.without_tax.value}}"
+        data-image-url="{{product.main_image.data}}"
+        data-url="{{product.url}}"></div>
+    <!-- END Item Matching Script -->   
+    
     {{#each product.reviews.messages}}
         {{#if error}}
             {{>components/common/alert-error error}}
@@ -468,6 +478,8 @@
                                     </button>
                                 </div>
                             </div>
+                        <div id="pickup"></div>
+                        <div id="check-shipping"></div>
                         {{/if}}
                         <div class="alertBox productAttributes-message" style="display:none">
                             <div class="alertBox-column alertBox-icon">
@@ -504,6 +516,7 @@
 
                 {{> components/common/share url=product.url}}
                 {{{snippet 'product_details'}}}
+                <div class="consultus"><img class="cunsulticon" src="https://cdn11.bigcommerce.com/s-lpuqsi1cy6/product_images/uploaded_images/cloud.jpg"><strong>ASK AN EXPERT</strong><br/>Speak to one of our expertly trained specialists!<br/> <strong>1-800-486-7497 ext 117</strong></div>
             </section>
         </div>
 
@@ -522,7 +535,7 @@
         <div class="emthemesModezBannersBlockBeforeDescription-wrapper emthemesModezBannersBlockBeforeDescription-wrapper--{{theme_settings.productpage_description_type}}"><div data-emthemesmodez-remote-banner="emthemesModezBannersBlockBeforeDescription"></div></div>
     {{/if}}
 
-    <div data-also-bought-parent-scope class="productView-descriptionWrapper">
+    <div data-also-bought-parent-scope class="productView-descriptionWrapper weby-product-description">
         <article class="productView-description{{#if theme_settings.productpage_description_type '===' 'full'}} productView-description--full{{/if}}">
             <ul class="tabs tabs--alt" data-tab>
                 <li class="tab tab--description is-active">
@@ -552,9 +565,9 @@
 
                 {{#all product.custom_fields.length theme_settings.productpage_custom_fields_tab}}
                 {{#any (unless theme_settings.productpage_custom_fields_hide_special) (if product.custom_fields.length '>' specialCustomFields )}}
-                    <li class="tab tab--addition">
+                    <!-- <li class="tab tab--addition">
                         <a class="tab-title" href="#tab-addition">{{lang 'products.addition'}}</a>
-                    </li>
+                    </li> -->
                 {{/any}}
                 {{/all}}
                 {{#all settings.show_product_reviews theme_settings.show_product_reviews_tabs}}
@@ -623,38 +636,6 @@
                         <a href="#" class="emthemesModez-mobile-collapse-handle" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
                     </div>
                 {{/if}}
-                {{#all product.custom_fields.length theme_settings.productpage_custom_fields_tab}}
-                {{#any (unless theme_settings.productpage_custom_fields_hide_special) (if product.custom_fields.length '>' specialCustomFields )}}
-                    <div class="tab-content" id="tab-addition" data-emthemesmodez-mobile-collapse>
-                        <h2 class="page-heading">{{lang 'products.addition'}}</h2>
-                        <div class="productView-addition-tabContent emthemesModez-mobile-collapse-content" data-emthemesmodez-mobile-collapse-content>
-                            <table class="productView-addition-table table">
-                                <tbody class="table-tbody">
-                                    {{#if theme_settings.productpage_custom_fields_hide_special}}
-                                        {{#each product.custom_fields}}
-                                            {{#startsWith '__' name}}
-                                            {{else}}
-                                                <tr class="productView-info-row--cf{{pascalcase name}}">
-                                                    <td><div class="productView-info-name productView-info-name--cf{{pascalcase name}}">{{name}}:</div></td>
-                                                    <td><div class="productView-info-value productView-info-value--cf{{pascalcase name}}">{{{value}}}</div></td>
-                                                </tr>
-                                            {{/startsWith}}
-                                        {{/each}}
-                                    {{else}}
-                                        {{#each product.custom_fields}}
-                                            <tr class="productView-info-row--cf{{pascalcase name}}">
-                                                <td><div class="productView-info-name productView-info-name--cf{{pascalcase name}}">{{name}}:</div></td>
-                                                <td><div class="productView-info-value productView-info-value--cf{{pascalcase name}}">{{{value}}}</div></td>
-                                            </tr>
-                                        {{/each}}
-                                    {{/if}}
-                                </tbody>
-                            </table>
-                        </div>
-                        <a href="#" class="emthemesModez-mobile-collapse-handle" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
-                    </div>
-                {{/any}}
-                {{/all}}
                 {{#all settings.show_product_reviews theme_settings.show_product_reviews_tabs}}
                 <div class="tab-content" id="tab-reviews" data-emthemesmodez-mobile-collapse>
                     <h2 class="page-heading">{{lang 'products.reviews.header' total=product.reviews.total}}</h2>
@@ -666,6 +647,37 @@
                 {{/all}}
             </div>
         </article>
+        {{#all product.custom_fields.length theme_settings.productpage_custom_fields_tab}}
+        {{#any (unless theme_settings.productpage_custom_fields_hide_special) (if product.custom_fields.length '>' specialCustomFields )}}
+            <div class="tab-content is-active weby-product-description-box" id="tab-addition" data-emthemesmodez-mobile-collapse>
+                <h2 class="page-heading weby-product-description-header">{{lang 'products.addition'}}</h2>
+                <div class="productView-addition-tabContent emthemesModez-mobile-collapse-content weby-product-description-table" data-emthemesmodez-mobile-collapse-content>
+                    <table class="productView-addition-table table">
+                        <tbody class="table-tbody">
+                            {{#if theme_settings.productpage_custom_fields_hide_special}}
+                                {{#each product.custom_fields}}
+                                    {{#startsWith '__' name}}
+                                    {{else}}
+                                        <tr class="productView-info-row--cf{{pascalcase name}}">
+                                            <td><div class="productView-info-name productView-info-name--cf{{pascalcase name}}">{{name}}:</div></td>
+                                            <td><div class="productView-info-value productView-info-value--cf{{pascalcase name}}">{{{value}}}</div></td>
+                                        </tr>
+                                    {{/startsWith}}
+                                {{/each}}
+                            {{else}}
+                                {{#each product.custom_fields}}
+                                    <tr class="productView-info-row--cf{{pascalcase name}}">
+                                        <td><div class="productView-info-name productView-info-name--cf{{pascalcase name}}">{{name}}:</div></td>
+                                        <td><div class="productView-info-value productView-info-value--cf{{pascalcase name}}">{{{value}}}</div></td>
+                                    </tr>
+                                {{/each}}
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+                <a href="#" class="emthemesModez-mobile-collapse-handle weby-product-description-table" data-emthemesmodez-mobile-collapse-handle><span class="on">{{lang 'common.view_all'}}</span><span class="off">{{lang 'common.close'}}</span></a>
+            </div>
+        {{/any}}
+        {{/all}}
     </div>
-    
 </div>
