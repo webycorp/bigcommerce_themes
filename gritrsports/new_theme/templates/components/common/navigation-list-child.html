@@ -1,6 +1,6 @@
 {{#if children}}
     <a
-        class="navPage-childList-action navPages-action has-subMenu" 
+        class="navPage-childList-action navPages-action has-subMenu weby-nav-childlist" 
         href="{{url}}"
         {{#if menu_type '!=' 'vertical'}}data-instantload{{/if}}
         {{#if id '==' category_id}}data-current-category{{/if}}
@@ -8,10 +8,10 @@
         {{#if menu_type '!=' 'vertical'}}data-collapsible-disabled-breakpoint="medium"{{/if}}
         data-collapsible-disabled-state="open"
         data-collapsible-enabled-state="closed">
-        {{name}} <i class="icon navPages-action-moreIcon" aria-hidden="true"><svg><use xlink:href="#icon-chevron-down" /></svg></i>
+        {{name}} <i class="icon navPages-action-moreIcon weby-nav-childlist-icon" aria-hidden="true"><svg><use xlink:href="#icon-chevron-down" /></svg></i>
     </a>
-    <ul class="navPage-childList" id="navPages-{{id}}{{idSuffix}}">
-        <li class="navPage-childList-item">
+    <ul class="navPage-childList weby-nav-sublist weby-inactive-child" id="navPages-{{id}}{{idSuffix}}">
+        <li class="navPage-childList-item weby-nav-first-child">
             <a class="navPage-childList-action navPages-action" data-instantload href="{{url}}">{{lang 'category.view_all.name' category=name}}</a>
         </li>
         {{#each children}}
