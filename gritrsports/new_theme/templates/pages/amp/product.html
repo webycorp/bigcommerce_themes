@@ -23,8 +23,8 @@ product:
 {{/partial}}
 {{#partial "page"}}
     {{> components/amp/common/header }}
-    <div>
-        {{> components/amp/products/product-view}}
+    <div itemscope itemtype="http://schema.org/Product">
+        {{> components/amp/products/product-view schema=true}}
     </div>
     {{#if settings.amp_analytics_id}}
         <amp-analytics type="googleanalytics">
