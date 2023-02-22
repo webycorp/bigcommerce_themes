@@ -24,7 +24,7 @@
                 {{else}}
                     {{#if customer}}
                         <a class="navUser-action" href="{{urls.account.index}}">
-                            <span class="navUser-item-icon navUser-item-accountIcon"><svg class="icon"><use xlink:href="#icon-user" /></svg></span>
+                            <span class="navUser-item-icon navUser-item-accountIcon emthemesModez-icon-linear-user"></span>
                             <span class="navUser-item-accountLabel">{{lang 'common.account'}}</span>
                         </a>
                         <a class="navUser-action" href="{{urls.auth.logout}}">{{lang 'common.logout'}}</a>
@@ -71,7 +71,7 @@
         {{#if settings.gift_certificates_enabled}}
             <li class="navUser-item">
                 <a class="navUser-action navUser-action--giftCert" href="{{urls.gift_certificate.purchase}}" title="{{lang 'common.gift_cert'}}">
-                    <span class="navUser-item-icon navUser-item-giftCertIcon"><svg class="icon"><use xlink:href="#icon-gift" /></svg></span>
+                    <span class="navUser-item-icon navUser-item-giftCertIcon emthemesModez-icon-gift"></span>
                     <span class="navUser-item-giftCertLabel">{{{lang 'common.gift_cert2'}}}</span>
                 </a>
             </li>
@@ -94,7 +94,7 @@
                 data-options="align:right"
                 href="{{urls.cart}}"
                 title="{{lang 'common.cart'}}">
-                <span class="navUser-item-icon navUser-item-cartIcon"><svg class="icon"><use xlink:href="#icon-cart" /></svg></span>
+                <span class="navUser-item-icon navUser-item-cartIcon emthemesModez-icon-linear-cart"></span>
                 <span class="navUser-item-cartLabel">{{lang 'common.cart'}}</span> <span class="countPill cart-quantity"></span>
             </a>
 
