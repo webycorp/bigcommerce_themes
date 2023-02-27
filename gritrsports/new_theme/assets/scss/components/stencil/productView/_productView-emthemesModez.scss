@@ -1234,3 +1234,7 @@
     @extend %productView-responsive-tabs;
     @extend %productView-productTabs;
 }
+#tab-warranty > div > table > tbody > tr {border: 1px solid #d4d4d4;
+    padding: 5px;}
+#tab-warranty > div > table > tbody > tr > td {border: 1px solid #d4d4d4;
+    padding: 5px;}
